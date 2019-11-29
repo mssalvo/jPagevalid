@@ -155,6 +155,7 @@ jPagevalid.prototype.process = function (x) {
     var input = this.inputs[x];
     var element = input.elObj;
     var elementBoxError = input.elError || {innerHTML: ''};
+    var inputsObj=this.inputs;
     input.message = input.messageOrigin;
     if (input.classNotValid !== input.classNotValidOrigin) {
         if (element.classList) {
@@ -185,7 +186,7 @@ jPagevalid.prototype.process = function (x) {
                     return this.inputs[x].valid
                 }
             }
-            if (!this.partFn[types[t]].fn.apply(element, [element.value, this.partFn[types[t]].message, input])) {
+            if (!this.partFn[types[t]].fn.apply(element, [element.value, this.partFn[types[t]].message, input,function(id){var el=undefined; inputsObj.forEach(function(e){if(id==e.elName)el=e.elObj;}); return el || document.createElement('input')}])) {
                 this.inputs[x].valid = false;
                 elementBoxError.innerHTML = input.message || this.partFn[types[t]].message  /*input.message*/
                 if (element.classList) {
@@ -230,7 +231,7 @@ jPagevalid.prototype.process = function (x) {
             fn = eval(input.validateFn);
         if (typeof (input.validateFn) === "function")
             fn = input.validateFn;
-        if (!fn.apply(element, [element.value, input.message, input]))
+        if (!fn.apply(element, [element.value, input.message, input,function(id){var el=undefined; inputsObj.forEach(function(e){if(id==e.elName)el=e.elObj;}); return el || document.createElement('input')}]))
         {
             this.inputs[x].valid = false;
             elementBoxError.innerHTML = input.message || ''
