@@ -41,7 +41,7 @@ jPagevalid.form('myformTest')
 
 ## _per recuperare un istanzia precedente e utilizzare i metodi disponibili_
 
-esempio di nuova istanzia, applicare un validatore ad un form 
+**_esempio di nuova istanzia, applicare un validatore ad un form_**
 
 ```js
 jPagevalid.form('myformTest')
@@ -49,21 +49,21 @@ jPagevalid.form('myformTest')
 jPagevalid.get('myformTest').form()
 ```
 
-esempio recupero istanzia
+**_esempio recupero istanzia_**
 
 ```js
 jPagevalid.get('myformTest')
 
 ```
 
-valida tutto il form
+**_valida tutto il form_**
 
 ```js
 jPagevalid.get('myformTest').valid()
 
 ```
 
-valida un singolo elemento del form
+**_valida un singolo elemento del form_**
 
 ```js
 jPagevalid.get('myformTest').valid('idElemento')
@@ -103,7 +103,7 @@ jPagevalid.form('myTagTest')
 jPagevalid.get('mybody').include();
 ```
 
-per validare il singolo elemento del body
+**_per validare il singolo elemento del body_**
 
 ```js
 jPagevalid.get('mybody').valid('01')
@@ -116,7 +116,7 @@ jPagevalid.get('mybody').valid('03')
 ```js
 jPagevalid.addValidation('nome-funzione',function(v){},'messaggio di errore');
 ```
-oppure
+**oppure**
 
 ```js
 jPagevalid.form('myformTest').addValidation('nome-funzione',function(v){},'messaggio di errore');
