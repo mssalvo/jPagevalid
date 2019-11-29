@@ -104,7 +104,7 @@ jPagevalid.prototype.addValidation = function (fnname/*<nome della funzione>*/, 
     this.partFn[fnname] = {fn: fnCall, message: msg};
     return this;
 };
-jPagevalid.prototype.clearById = function (/*<elimina classe di validazioni ed il messaggio prodotto>*/) {
+jPagevalid.prototype.clearById = function (/*<elimina le classi di validazioni ed il messaggio prodotto>*/) {
     var t__ = this;
     if (typeof arguments[0] !== "undefined" && typeof arguments[0] === "string") {
         for (var x in t__.inputs) {
