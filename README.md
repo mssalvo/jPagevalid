@@ -8,6 +8,23 @@ Per validazioni lato client in javascript nativo, si distacca da ogni framework 
 <script src="/path/dist/1.x.x/jpagevalid.js"></script>
 ```
 
+## _Metodi disponibili_
+
+Metodo | Esempio | Destrizione  
+------- | ------- | ------- 
+**get** | jPaging.get('nomeIstanza') | crea una nova istanza se non presente o ritorna l'istanza associata al nome passato come parametro 
+**form** | jPaging.form('id-form-html') | inizializza una validazione per il form, crea una nova istanza associa all'istanza come nome l'id passato come parametro
+**isSubmit** | jPaging.get('nomeIstanza').isSubmit(false|true) | abilita o disabilita l'invio modulo per l'evento submit associato al form
+**authorizeSend** | jPaging.get('nomeIstanza').authorizeSend() | abilita comunque e sempre l'invio modulo anche in presenza di validazione negativa
+**addValidation** | jPaging.addValidation('nome-funzione',funzione,'messaggio-di-errore') | addizziona alle funzioni di default una nuova funzione per validazioni personalizzate 
+**changeFnMessage** | jPaging.get('nomeIstanza').changeFnMessage('nome-funzione','messaggio-modificato') | cambia un messaggio associato ad una funzione di default o personalizzata
+**valid** | jPaging.get('nomeIstanza').valid() | valida il form legato all'istanza se passato il parametro id valida l'elemento singolo del form jPaging.get('nomeIstanza').valid('id-input')
+**addInput** | jPaging.get('nomeIstanza').addInput({object-javascript}) | addiziona un elemento da validare all'istanza corrente 
+**include** | jPaging.get('nomeIstanza').include() | addiziona tutti gli elementi con attributo jms-valid="{type:'required',etc..,etc..}" presenti nella pagina html all'istanza per la validazione
+ 
+
+
+
 ## Esempio valida form, fonte dati da attribute jms-valid
 
 ```html
