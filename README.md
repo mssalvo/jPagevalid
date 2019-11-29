@@ -87,4 +87,35 @@ jPagevalid.get('mybody').valid('01')
 jPagevalid.get('mybody').valid('02')
 jPagevalid.get('mybody').valid('03')
 ```
+## Aggiungere una funzione di validazione personalizzata
 
+```html
+   <form id="myformTest" action="...">
+      <input type="text" id="dataInizio" jms-valid="{type:'requred,date'}">   
+      <input type="text" id="dataFine" jms-valid="{type:'requred,date,checkendate'}">   
+      <input type="submit" value="salva"> 
+   </form> 
+```
+
+
+```js
+jPagevalid.addValidation("checkendate",function(value,message,input,search) {
+    	
+    	var bbol = false;
+    	var dataemissioneini = search('dataInizio').value;  // recupero l'elemento input[dataInizio] presente nell'oggetto jPagevalid
+    	var dataemissionefine =search('dataFine').value;  // recupero l'elemento input[dataFine] presente nell'oggetto jPagevalid
+    	
+    	if ( dataemissioneini != '' && dataemissionefine != '' )
+    	{
+    		var datainizio =  new Date(dataemissioneini);
+    		var datafine = new Date(dataemissionefine);
+    		 if (datafine.getTime() > datainizio.getTime())         
+    			 bbol = true;
+    	}
+    	return bbol;
+     }, 'Inserire una data maggiore della data di inizio')
+     .form('myformTest')
+     .changeFnMessage('date','Si prega di specificare un formato data valido (GG/MM/AAAA)') // cambio il messaggio del metodo di defasult data
+     .isSubmit(false); // disabilito l'invio del modulo tramite l'evento submit
+
+```
