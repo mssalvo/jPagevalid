@@ -133,3 +133,6 @@ jPagevalid.addValidation("checkendate",function(value,message,input,search) {
 
 
 
+ ## License
+
+jPagevalid è disponibile sotto la licenza MIT. Vedi il [LICENSE](https://github.com/mssalvo/jPagevalid/blob/master/LICENSE) per maggiori informazioni.
