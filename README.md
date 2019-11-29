@@ -89,6 +89,17 @@ jPagevalid.get('mybody').valid('03')
 ```
 ## Aggiungere una funzione di validazione personalizzata
 
+
+```js
+jPagevalid.addValidation('nome-funzione',function(v){},'messaggio di errore');
+```
+oppure
+
+```js
+jPagevalid.form('myformTest').addValidation('nome-funzione',function(v){},'messaggio di errore');
+```
+## Esempio
+
 ```html
    <form id="myformTest" action="...">
       <input type="text" id="dataInizio" jms-valid="{type:'requred,date'}">   
@@ -119,3 +130,6 @@ jPagevalid.addValidation("checkendate",function(value,message,input,search) {
      .isSubmit(false); // disabilito l'invio del modulo tramite l'evento submit
 
 ```
+
+
+
