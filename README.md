@@ -1,6 +1,12 @@
 # jPagevalid
 Per validazioni lato client in javascript nativo, si distacca da ogni framework javascript per il suo ciclo di vita - Valida form ed elementi singoli tag Html
 
+# Getting Started
+
+1. Includi jPagevalid sulla tua pagina prima della chiusura tag </body> 
+```html
+<script src="/path/dist/1.x.x/jpagevalid.js"></script>
+```
 
 ## Esempio valida form, fonte dati da attribute jms-valid
 
