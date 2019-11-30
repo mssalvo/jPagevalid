@@ -106,6 +106,14 @@ jPagevalid.form('myTagTest')
 jPagevalid.get('mybody').include();
 ```
 
+
+**_per validare l'itero body_**
+
+```js
+jPagevalid.get('mybody').valid()
+```
+
+
 **_per validare il singolo elemento del body_**
 
 ```js
