@@ -21,6 +21,9 @@ Metodo | Esempio | Destrizione
 **valid** | jPaging.get('nomeIstanza').valid() | valida il form legato all'istanza se passato il parametro id valida l'elemento singolo del form jPaging.get('nomeIstanza').valid('id-input')
 **addInput** | jPaging.get('nomeIstanza').addInput({object-javascript}) | addiziona un elemento da validare all'istanza corrente 
 **include** | jPaging.get('nomeIstanza').include() | addiziona tutti gli elementi con attributo jms-valid="{type:'required',etc..,etc..}" presenti nella pagina html all'istanza per la validazione
+**onChange** | jPaging.get('nomeIstanza').onChange(function(valid){}) | esegue la funzione assegnata ad ogni cambiamento di un modulo, nel costruttore viene iniettato la validazione del form true/false 
+**checkOnSubmit** | jPaging.get('nomeIstanza').checkOnSubmit() | abilita - disabilita in modo automatico il pulsante submit per l'inivo del modulo [ di default e settato a false ]
+**checkOffSubmit** | jPaging.get('nomeIstanza').checkOffSubmit() |  disabilita il modo automatico, lascia all'utente gestire il pulsante submit 
  
 
 
