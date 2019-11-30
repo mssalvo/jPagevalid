@@ -342,19 +342,19 @@ jPagevalid.prototype.addInput = function (obj) {
                     }, false);
                 if (typeof (obj.blur) === "undefined" || typeof (obj.blur) === "boolean" && obj.blur || typeof t__.fnChange === "function")
                     obj.input.addEventListener('blur', function () {
-                        t__.eventBlur(obj.input)
+                        t__.eventValid(obj.input)
                     }, false);
                 if (typeof (obj.keyup) === "boolean" && obj.keyup || typeof t__.fnChange === "function")
                     obj.input.addEventListener('keyup', function () {
-                        t__.eventBlur(obj.input)
+                        t__.eventValid(obj.input)
                     }, false);
                 if (typeof (obj.keypress) === "boolean" && obj.keypress || typeof t__.fnChange === "function")
                     obj.input.addEventListener('keypress', function () {
-                        t__.eventBlur(obj.input)
+                        t__.eventValid(obj.input)
                     }, false);
                 if (obj.input.type.toLowerCase() === 'checkbox' || obj.input.type.toLowerCase() === 'radio')
                     obj.input.addEventListener('click', function () {
-                        t__.eventBlur(obj.input)
+                        t__.eventValid(obj.input)
                     }, false);
                 
                 t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus))
@@ -387,19 +387,19 @@ jPagevalid.prototype.include = function (d) {
                 }, false);
             if (typeof (objVal.blur) === "undefined" || typeof (objVal.blur) === "boolean" && objVal.blur || typeof t__.fnChange === "function")
                 el.addEventListener('blur', function () {
-                    t__.eventBlur(el)
+                    t__.eventValid(el)
                 }, false);
             if (typeof (objVal.keyup) === "boolean" && objVal.keyup || typeof t__.fnChange === "function")
                 el.addEventListener('keyup', function () {
-                    t__.eventBlur(el)
+                    t__.eventValid(el)
                 }, false);
             if (typeof (objVal.keypress) === "boolean" && objVal.keypress || typeof t__.fnChange === "function")
                 el.addEventListener('keypress', function () {
-                    t__.eventBlur(el)
+                    t__.eventValid(el)
                 }, false);
             if (el.type.toLowerCase() === 'checkbox' || el.type.toLowerCase() === 'radio')
                 el.addEventListener('click', function () {
-                    t__.eventBlur(el)
+                    t__.eventValid(el)
                 }, false);
         } catch (err) {
         }
@@ -426,7 +426,7 @@ jPagevalid.prototype.eventFocus = function (a) {
     t__.executeOnChange(a);
 
 };
-jPagevalid.prototype.eventBlur = function (o) {
+jPagevalid.prototype.eventValid = function (o) {
     var t__ = this;
     t__.valid(o.id);
     t__.executeOnChange(o);
