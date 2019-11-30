@@ -42,7 +42,7 @@ jPagevalid.addValidation = function (fnname/*<nome della funzione>*/, fnCall/*<f
 jPagevalid.prototype.partFn = {
     email: {fn: function (v) {
             return /[a-z]+@[a-z]+\.[a-z]+/.test(v)
-        }, message: 'Sintassi Email email, non valida'},
+        }, message: 'Si prega di specificare un email valida per favore'},
     number: {fn: function (v) {
             return /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(v)
         }, message: 'Solo caratteri numerici, accetta segno negativo (-), migliaia (,) decimali (.)'},
@@ -240,6 +240,8 @@ jPagevalid.prototype.process = function (x) {
                     elementBoxError.innerHTML = input.message || this.partFn[types[t]].message  /*input.message*/
                     return this.inputs[x].valid
                 }
+                this.fnEnabledSubmits();
+               return this.inputs[x].valid
             }
             if (!this.partFn[types[t]].fn.apply(element, [element.value, this.partFn[types[t]].message, input, function (id) {
                     var el = undefined;
@@ -350,8 +352,12 @@ jPagevalid.prototype.addInput = function (obj) {
                     obj.input.addEventListener('keypress', function () {
                         t__.eventBlur(obj.input)
                     }, false);
-                t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus))
+                if (obj.input.type.toLowerCase() === 'checkbox' || obj.input.type.toLowerCase() === 'radio')
+                    obj.input.addEventListener('click', function () {
+                        t__.eventBlur(obj.input)
+                    }, false);
                 
+                t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus))
             }
         } else {
             obj.input.id = obj.input.id || 'jms-' + Math.floor(Math.random() * 5500) + '-' + Math.floor(Math.random() * 10000);
@@ -389,6 +395,10 @@ jPagevalid.prototype.include = function (d) {
                 }, false);
             if (typeof (objVal.keypress) === "boolean" && objVal.keypress || typeof t__.fnChange === "function")
                 el.addEventListener('keypress', function () {
+                    t__.eventBlur(el)
+                }, false);
+            if (el.type.toLowerCase() === 'checkbox' || el.type.toLowerCase() === 'radio')
+                el.addEventListener('click', function () {
                     t__.eventBlur(el)
                 }, false);
         } catch (err) {
