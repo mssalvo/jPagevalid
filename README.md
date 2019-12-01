@@ -208,7 +208,7 @@ jPagevalid.addValidation("checkendate",function(value,message,input,search) {
           </form>
 ```
 
-## Esempio 
+## Esempio 1
 ```js
 var obj_form = {
                       form: 'formTest4',
@@ -237,6 +237,15 @@ var obj_form = {
         
          jPagevalid.form(obj_form);
 
+```
+## Esempio 2
+
+```js
+ jPagevalid.form('formTest4')
+             .addInput({input: 'firstName4',type: 'required'})  
+             .addInput({input: 'total4',type: 'required,number'}) 
+             .addInput({input: 'email4',type: 'required,email'}) 
+             .addInput({input: 'testomin',type: 'required,alphanumeric'}) 
 ```
 
  ## License
