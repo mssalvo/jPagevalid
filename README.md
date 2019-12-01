@@ -8,6 +8,9 @@ Per validazioni lato client in javascript nativo, si distacca da ogni framework 
 <script src="/path/dist/1.x.x/jpagevalid.js"></script>
 ```
 
+* ## [Demo jPagevalid](https://mssalvo.github.io/jPagevalid/)
+
+
 ## _Metodi disponibili_
 
 Metodo | Esempio | Destrizione  
