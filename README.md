@@ -258,7 +258,7 @@ Proprieta | Type | Descrizione
 ------- | ------- | ------- 
 **input** | String |id del tag input da validare, obbligatorio se inserito in oggetto javascript. Non obbligatorio se inserito come oggetto in attribute jms-valid={}
 **type** | String | nome della funzione di validazione separare piu nomi con la virgola(,) obbligatorio se si vuole eseguire una validazione
-**boxErr** | String | id del tag che contiene il messaggio di errore, [facoltativo]
+**boxErr** | String | id del tag che contiene il messaggio di errore, in alternativa se non si vuole utilizzare la proprieta, inserite come nome attributo html l'id del tag input nel tag che contiene il messaggio di errore ``esempio:<input id="citta"><div class="error" citta> messaggio di errore</div>``  [facoltativo]
 **focus** | boolean | abilita e disabilita la validazione su focus di default e abilitata[facoltativo]
 **blur** | boolean | abilita e disabilita la validazione su blur di default e abilitata[facoltativo]
 **keyup** | boolean | abilita e disabilita la validazione su keyup di default e disabilitata[facoltativo]
