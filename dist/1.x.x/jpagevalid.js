@@ -41,7 +41,7 @@ jPagevalid.addValidation = function (fnname/*<nome della funzione>*/, fnCall/*<f
 };
 jPagevalid.prototype.partFn = {
     email: {fn: function (v) {
-            return /[a-z]+@[a-z]+\.[a-z]+/.test(v)
+            return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,12}$/.test(v)
         }, message: 'Si prega di specificare un email valida per favore'},
     number: {fn: function (v) {
             return /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(v)
@@ -64,6 +64,9 @@ jPagevalid.prototype.partFn = {
     cap: {fn: function (v) {
             return /^\d{5}$/.test(v)
         }, message: 'Si prega di specificare un codice postale valido'},
+    equals:{fn: function (f,i,p) {
+            return f(i,p);
+        }, message: 'Il valore inserito non coincide con quello atteso'},
     date: {fn: function (v) {
             var isCheckData = false,
                     regex1 = /^\d{2}\/\d{2}\/\d{4}$/,
@@ -97,6 +100,17 @@ jPagevalid.prototype.partFn = {
             return  isCheckData;
         }, message: 'Si prega di specificare un formato data valido (GG-MM-AAAA) (GG/MM/AAAA)'}
 
+};
+jPagevalid.prototype.isAllEqualsTo = function (input,inputs) {
+    var isVal=true;
+    var inputsId=input.equalsTo.split(',');
+    for (var j in inputsId) {
+    for (var i in inputs) {
+        if (input.elName!=inputs[i].elName && inputs[i].elName==inputsId[j] && inputs[i].elObj.value!==input.elObj.value)
+            isVal= false;
+    }
+    }
+    return isVal;
 };
 jPagevalid.prototype.allValid = function () {
     for (var i in this.inputs) {
@@ -155,6 +169,7 @@ jPagevalid.prototype.changeFnMessage = function (fnname/*<nome della funzione>*/
 };
 
 jPagevalid.prototype.addValidation = function (fnname/*<nome della funzione>*/, fnCall/*<funzione>*/, msg/*<messaggio>*/) {
+    if(fnname!=="equals")
     this.partFn[fnname] = {fn: fnCall, message: msg};
     return this;
 };
@@ -231,6 +246,7 @@ jPagevalid.prototype.process = function (x) {
     var types = input.validateType.toLowerCase().split(' ').join('').split(',');
     var isRequired = types.join('').indexOf('required') === -1 ? false : true;
     for (var t in types) {
+      
         if ((isRequired && typeof (types[t]) !== "undefined") || (!isRequired && element.value !== "") && typeof (types[t]) !== "undefined") {
             elementBoxError.innerHTML = "";
             if (types[t] === 'required' && element.type.toLowerCase() === 'checkbox' || element.type.toLowerCase() === 'radio') {
@@ -243,14 +259,15 @@ jPagevalid.prototype.process = function (x) {
                 this.fnEnabledSubmits();
                return this.inputs[x].valid
             }
-            if (!this.partFn[types[t]].fn.apply(element, [element.value, this.partFn[types[t]].message, input, function (id) {
+            var t__=this;
+            if (types[t]!=="equals" && !this.partFn[types[t]].fn.apply(element, [element.value, this.partFn[types[t]].message, input, function (id) {
                     var el = undefined;
                     inputsObj.forEach(function (e) {
                         if (id == e.elName)
                             el = e.elObj;
                     });
                     return el || document.createElement('input')
-                }])) {
+                }]) || types[t]==="equals" && !this.partFn[types[t]].fn.apply(element, [t__.isAllEqualsTo,input,t__.inputs])) {
                 this.inputs[x].valid = false;
                 elementBoxError.innerHTML = input.message || this.partFn[types[t]].message  /*input.message*/
                 if (element.classList) {
@@ -357,11 +374,11 @@ jPagevalid.prototype.addInput = function (obj) {
                         t__.eventValid(obj.input)
                     }, false);
                 
-                t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus))
+                t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus,obj.equalsTo))
             }
         } else {
             obj.input.id = obj.input.id || 'jms-' + Math.floor(Math.random() * 5500) + '-' + Math.floor(Math.random() * 10000);
-            t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus))
+            t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus,obj.equalsTo))
            
         }
     } catch (err) {
@@ -493,7 +510,7 @@ jPagevalid.prototype.form = function (/*form o object-valid*/) {
         return t__;
     }
 };
-var Obj = function (input, boxErr, message, validType, validCallback, name, classNotValid, classValid, keyup, keypress, blur, focus) {
+var Obj = function (input, boxErr, message, validType, validCallback, name, classNotValid, classValid, keyup, keypress, blur, focus,equalsTo) {
     this.elObj = input;
     this.elError = boxErr ? document.getElementById(boxErr) : document.querySelector('[' + name + ']') ? document.querySelector('[' + name + ']') : {innerHTML: ''};
     this.message = message || '';
@@ -509,7 +526,11 @@ var Obj = function (input, boxErr, message, validType, validCallback, name, clas
     this.keypress = typeof (keypress) === "boolean" ? keypress : false;
     this.blur = typeof (blur) === "boolean" ? blur : true;
     this.focus = typeof (focus) === "boolean" ? focus : true;
+    this.equalsTo = equalsTo || undefined;
     this.valid = this.validateType.indexOf('required') === -1 ? true : false;
+    if(this.equalsTo && this.validateType.indexOf('equals')=== -1){
+    this.validateType+=this.validateType?',equals':'equals';  
+    }
 };
 jPagevalid.get = function (n) {
     if (typeof (n) === "undefined")

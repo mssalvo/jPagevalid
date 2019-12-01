@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+
+    <title>jPagevalid example for validation</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+   
+  </head>
+
+  <body class="bg-light">
+
+    <div class="container">
+      <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+         <h2>jPagevalid </h2>
+         <p class="lead">Esempio Gestire la validazione utilizzando l'attributo <b>jms-valid</b></p>
+        <p class="lead"><b>jms-valid="</b>{type:'required,email'}<b>"</b></p>
+      </div>
+
+      <div class="row">
+          <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <h4 class="mb-3">ESEMPIO 1</h4>
+          <form id="myFormConAttribute" class="needs-validation" novalidate>
+            <div class="row">
+                  <div class="col-md-12">
+                  <font style="color: cornflowerblue"><b>&lt;input type="text" jms-valid="</b>{type:'required'}<b>" &gt;</b></font> 
+                  </div>
+              <div class="col-md-6 mb-3">
+                  
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="firstName1" placeholder="" value="" required jms-valid="{type:'required'}">
+                <div class="invalid-feedback" firstName1>
+                  Valid first name is required.
+                </div>
+                
+              </div>
+                  
+              <div class="col-md-6 mb-3">
+                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" id="lastName1" placeholder="" value="" required jms-valid="{type:'required'}">
+                <div class="invalid-feedback" lastName1>
+                  Valid last name is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="username">Username</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">@</span>
+                </div>
+                <input type="text" class="form-control" id="username1" placeholder="Username" required jms-valid="{type:'required,email'}">
+                <div class="invalid-feedback" style="width: 100%;" username1>
+                  Your username is required.
+                </div>
+              </div>
+               <div class="col-md-12">
+                  <font style="color: cornflowerblue"><b>&lt;input type="text" jms-valid="</b>{type:'required,email'}<b>" &gt;</b></font> 
+                  </div>
+            </div>
+              
+        <div class="mb-3">
+              <label for="password">Password</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Psw</span>
+                </div>
+                <input type="password" class="form-control" id="password" placeholder="Password" required jms-valid="{type:'required'}">
+                <div class="invalid-feedback" style="width: 100%;" password>
+                  Your username is required.
+                </div>
+              </div>
+            </div>
+               <div class="mb-3">
+                   <label for="password1">Ripeti password </label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Psw</span>
+                </div>
+                <input type="password" class="form-control" id="password1" placeholder="Ripeti Password" jms-valid="{type:'required',equalsTo:'password'}">
+                <div class="invalid-feedback" style="width: 100%;" password1>
+                  Your username is required.
+                </div>
+              </div>
+              <font style="color: cornflowerblue"><b>&lt;input type="password" jms-valid="</b>{type:'required',equalsTo:'password'}<b>" &gt;</b></font>     
+            </div>
+           <hr class="mb-4">
+              <b>jms-valid="</b>{type:'required',equalsTo:'password'}<b>"</b>
+               <p class="lead">controllo automatico di uguaglianza tra due o piu campi con l'attributo <b>equalsTo</b></p>
+                <hr class="mb-4">
+            <div class="row">
+              <div class="col-md-5 mb-3">
+                <label for="country">Comune</label>
+                <select class="custom-select d-block w-100" id="country1" required jms-valid="{type:'required,alphanumeric'}">
+                  <option value="">Choose...</option>
+                  <option>Portici</option>
+                  <option>Ercolano</option>
+                  <option>Torre Del Greco</option>
+                  <option>Torre Annunziata</option>
+                </select>
+                <div class="invalid-feedback" country1>
+                  Please select a valid Comune.
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="state">Provincia</label>
+                <select class="custom-select d-block w-100" id="state1" required jms-valid="{type:'required,alphanumeric'}">
+                  <option value="">Choose...</option>
+                  <option>NA</option>
+                  <option>SA</option>
+                  <option>AV</option>
+                  <option>BN</option>
+                </select>
+                <div class="invalid-feedback" state1>
+                  Please provide a valid Provincie.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="zip">CAP</label>
+                <input type="text" class="form-control" id="zip1" placeholder="" required jms-valid="{type:'required,cap'}">
+                <div class="invalid-feedback" zip1>
+                  Cap code required.
+                </div>
+              </div>
+            </div>
+
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">save</button>
+          </form>
+        </div>
+          <div class="col-md-2"></div>
+      </div>
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        
+      </footer>
+    </div>
+
+    <!-- jPagevalid core JavaScript
+     ======================================= -->
+ 
+    
+  <div class="container">
+      <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+         <h2>jPagevalid </h2>
+         <p class="lead">Esempio validazione dinamica con istruzioni javascript</p>
+           
+      </div>
+
+      <div class="row">
+    <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <p class="lead text-left">
+               jPagevalid.form('myFormConObjectJavascript')<br>
+              
+             .addInput({input: 'firstName',type: 'required'}) <br> 
+             .addInput({input: 'total',type: 'required,number'}) <br>
+             .addInput({input: 'username',type: 'required,email'}) <br>
+             .addInput({input: 'country',type: 'required,alphanumeric'}) <br>
+             .addInput({input: 'state',type: 'required,alphanumeric'}) <br>
+             .addInput({input: 'zip',type: 'required,interger,cap'})  <br>    
+             .addInput({input: 'save-info',type:'required'}) <br>
+             .checkOnSubmit()<br>
+            .addValidation('alphanumeric',function(v){return /[A-Za-z0-9_]+/.test(v)},'Inserisci un testo valido')<br>
+            </p>
+          <h4 class="mb-3">ESEMPIO 2</h4>
+          <form id="myFormConObjectJavascript" class="needs-validation" novalidate>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="">
+                <div class="invalid-feedback" firstName>
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="total">Total</label>
+                <input type="text" class="form-control" id="total" placeholder="" value="">
+                <div class="invalid-feedback" total>
+                  Valid total is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="username">Username</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">@</span>
+                </div>
+                <input type="text" class="form-control" id="username" placeholder="Username">
+                <div class="invalid-feedback" style="width: 100%;" username>
+                  Your username is required.
+                </div>
+              </div>
+            </div>
+ 
+            <div class="row">
+              <div class="col-md-5 mb-3">
+                <label for="country">Comune</label>
+                <select class="custom-select d-block w-100" id="country">
+                  <option value="">Choose...</option>
+                  <option>Portici</option>
+                  <option>Ercolano</option>
+                  <option>Torre Del Greco</option>
+                  <option>Torre Annunziata</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid Comune.
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="state">Provincia</label>
+                <select class="custom-select d-block w-100" id="state">
+                  <option value="">Choose...</option>
+                  <option>NA</option>
+                  <option>SA</option>
+                  <option>AV</option>
+                  <option>BN</option>
+                </select>
+                <div class="invalid-feedback" state>
+                  Please provide a valid Provincie.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="zip">CAP</label>
+                <input type="text" class="form-control" id="zip" placeholder="">
+                <div class="invalid-feedback" zip>
+                  Cap code required.
+                </div>
+              </div>
+            </div>
+            <hr class="mb-4">
+           
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="save-info">
+              <label class="custom-control-label" for="save-info">Save this information for next time</label>
+              <div class="invalid-feedback" style="display:block" save-info> </div>
+            </div>
+
+            <hr class="mb-4">
+            <button class="btn btn-dark btn-lg btn-block" type="submit">save</button>
+          </form>
+        </div>
+    <div class="col-md-2"></div>
+      </div>
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+         
+      </footer>
+    </div>
+    
+    
+      <!-- jPagevalid core JavaScript
+     ======================================= -->
+ 
+    
+  <div class="container">
+      <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+         <h2>jPagevalid </h2>
+        <p class="lead">Esempio validazione dinamica con inclusione di oggetto javascript</p>
+      </div>
+
+      <div class="row">
+    <div class="col-md-2"></div>
+        <div class="col-md-8">
+                       <p class="lead text-left" style="margin-left:100px">
+                     var obj_form = {<br>
+                      form: 'formTest4', //id form <br>
+                      submit: true,<br>
+                      inputs: [<br>
+                          {input: 'firstName4',<br>
+                              boxErr: 'boxerror4',//opzionale - id div che contiene il msg di errore <br>
+                              type: 'required'<br>
+                          },
+                          {input: 'total4',<br>
+                             
+                              type: 'required,number',<br>
+                              keyup: true,<br>
+                              keypress: true<br>
+                          },
+                          {input: 'email4',<br>
+                               
+                              type: 'required,email',<br>
+                          
+                          },
+                          {input: 'testomin',<br>
+                            type: 'required',<br>
+                                valid: function (value,message,input,search) {// opzionale funzione aggiuntiva<br>
+                                if (value.length >19) {<br>
+                                    return true;<br>
+                                } else<br>
+                                    input.message = "Inserisci min. 20 caratteri : " + value.length<br>
+                                     
+                                    return false;<br>
+                            },<br>
+                              keyup: true,<br>
+                              keypress: true<br>
+                               
+                          }]}<br>
+        <br>
+        <b>jPagevalid.get(</b>'formTest4'<b>).onChange(</b>function(valid){<br>
+             if(!valid)<br>
+             { <br>
+             // fai qualcosa...<br>
+             }<br>
+         }<b>).form(</b>obj_form<b>).checkOnSubmit()</b>;<br>
+            </p>
+          <h4 class="mb-3">ESEMPIO 3</h4>
+          <form id="formTest4" class="needs-validation" novalidate>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="firstName4" placeholder="" value="">
+                <div class="invalid-feedback" firstName4>
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="total4">Total</label>
+                <input type="text" class="form-control" id="total4" placeholder="" value="">
+                <div class="invalid-feedback" total4>
+                  Valid last name is required.
+                </div>
+              </div>
+            </div>
+  
+            <div class="mb-3">
+              <label for="email">Email </label>
+              <input type="email" class="form-control" id="email4" placeholder="you@example.com">
+              <div class="invalid-feedback" email4>
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="testoMin">Testo min 20 caratteri</label>
+              <input type="text" class="form-control" id="testomin" placeholder=" ">
+              <div class="invalid-feedback" testomin>
+               min 20 caratteri.
+              </div>
+            </div>
+ 
+            <hr class="mb-4">
+            <button id="btnSubmit" class="btn btn-primary btn-lg btn-block" type="submit">save</button>
+          </form>
+        </div>
+    <div class="col-md-2"></div>
+      </div>
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2019-2020 jPagevalid</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+      </footer>
+    </div>
+    
+      <!-- jPagevalid core JavaScript
+     ======================================= -->
+    <!--Posizionato alla fine del documento in modo che le pagine vengano caricate più velocemente -->
+    <script src="dist/1.x.x/jpagevalid.js"></script>
+    <script type="text/javascript">
+        
+        jPagevalid.form('myFormConAttribute').checkOnSubmit().addValidation('alphanumeric',function(v){return /[A-Za-z0-9_]+/.test(v)},'Inserisci un testo valido')
+        
+    </script> 
+    
+     <script type="text/javascript">
+      //save-info zip state country address2 address email username lastName firstName  
+     jPagevalid.form('myFormConObjectJavascript')
+              
+             .addInput({input: 'firstName',type: 'required'})  
+             .addInput({input: 'total',type: 'required,number'}) 
+             .addInput({input: 'username',type: 'required,email'}) 
+             .addInput({input: 'country',type: 'required,alphanumeric'}) 
+             .addInput({input: 'state',type: 'required,alphanumeric'}) 
+             .addInput({input: 'zip',type: 'required,interger,cap'})      
+             .addInput({input: 'save-info',type:'required'}) 
+             .checkOnSubmit()
+            .addValidation('alphanumeric',function(v){return /[A-Za-z0-9_]+/.test(v)},'Inserisci un testo valido')
+        
+        
+            var obj_form = {
+                      form: 'formTest4',
+                      submit: true,
+                      inputs: [
+                          {input: 'firstName4',
+                             
+                              type: 'required'
+                          },
+                          {input: 'total4',
+                             
+                              type: 'required,number',
+                              keyup: true,
+                              keypress: true
+                          },
+                          {input: 'email4',
+                               
+                              type: 'required,email',
+                          
+                          },
+                          {input: 'testomin',
+                            type: 'required',
+                                valid: function (value,message,input,search) {
+                                if (value.length >19) {
+                                    return true;
+                                } else
+                                    input.message = "Inserisci min. 20 caratteri : " + value.length
+                                     
+                                    return false;
+                            },
+                              keyup: true,
+                              keypress: true
+                               
+                          }]}
+        
+         jPagevalid.get('formTest4').onChange(function(valid){
+             if(!valid)
+             {
+              document.getElementById('btnSubmit').disabled=true; 
+              
+             }
+             else{
+              document.getElementById('btnSubmit').disabled=false;       
+             }
+         }).form(obj_form).checkOnSubmit();
+    </script> 
+    
+  </body>
+</html>
