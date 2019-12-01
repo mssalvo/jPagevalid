@@ -167,8 +167,77 @@ jPagevalid.addValidation("checkendate",function(value,message,input,search) {
      .isSubmit(false); // disabilito l'invio del modulo tramite l'evento submit
 
 ```
+## Esempio validazione tramite oggetto javascript
+```html
+<form id="formTest4" class="needs-validation" novalidate>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="firstName4" placeholder="" value="">
+                <div class="invalid-feedback" firstName4>
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="total4">Total</label>
+                <input type="text" class="form-control" id="total4" placeholder="" value="">
+                <div class="invalid-feedback" total4>
+                  Valid last name is required.
+                </div>
+              </div>
+            </div>
+  
+            <div class="mb-3">
+              <label for="email">Email </label>
+              <input type="email" class="form-control" id="email4" placeholder="you@example.com">
+              <div class="invalid-feedback" email4>
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
 
+            <div class="mb-3">
+              <label for="testoMin">Testo min 20 caratteri</label>
+              <input type="text" class="form-control" id="testomin" placeholder=" ">
+              <div class="invalid-feedback" testomin>
+               min 20 caratteri.
+              </div>
+            </div>
+ 
+            <hr class="mb-4">
+            <button id="btnSubmit" class="btn btn-primary btn-lg btn-block" type="submit">save</button>
+          </form>
+```
 
+## Esempio 
+```js
+var obj_form = {
+                      form: 'formTest4',
+                      submit: true,
+                      inputs: [
+                          {
+                           input: 'firstName4',
+                           type: 'required'
+                          },
+                          {
+                             input: 'total4',
+                             type: 'required,number',
+                             keyup: true,
+                             keypress: true
+                          },
+                          { 
+                           input: 'email4',
+                           type: 'required,email',
+                          },
+                         {   input: 'testomin',
+                             type: 'required',
+                             keyup: true,
+                             keypress: true
+                               
+                          }]}
+        
+         jPagevalid.form(obj_form);
+
+```
 
  ## License
 
