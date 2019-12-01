@@ -13,7 +13,7 @@ Per validazioni lato client in javascript nativo, si distacca da ogni framework 
 
 ## _Metodi disponibili_
 
-Metodo | Esempio | Destrizione  
+Metodo | Esempio | Descrizione  
 ------- | ------- | ------- 
 **get** | jPaging.get('nomeIstanza') | crea una nova istanza se non presente o ritorna l'istanza associata al nome passato come parametro 
 **form** | jPaging.form('id-form-html') | inizializza una validazione per il form, crea una nova istanza associa all'istanza come nome l'id passato come parametro
@@ -167,8 +167,113 @@ jPagevalid.addValidation("checkendate",function(value,message,input,search) {
      .isSubmit(false); // disabilito l'invio del modulo tramite l'evento submit
 
 ```
+## Esempi di validazione tramite oggetto javascript
+```html
+<form id="formTest4" class="needs-validation" novalidate>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="firstName4" placeholder="" value="">
+                <div class="invalid-feedback" firstName4>
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="total4">Total</label>
+                <input type="text" class="form-control" id="total4" placeholder="" value="">
+                <div class="invalid-feedback" total4>
+                  Valid last name is required.
+                </div>
+              </div>
+            </div>
+  
+            <div class="mb-3">
+              <label for="email">Email </label>
+              <input type="email" class="form-control" id="email4" placeholder="you@example.com">
+              <div class="invalid-feedback" email4>
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="testoMin">Testo min 20 caratteri</label>
+              <input type="text" class="form-control" id="testomin" placeholder=" ">
+              <div class="invalid-feedback" testomin>
+               min 20 caratteri.
+              </div>
+            </div>
+ 
+            <hr class="mb-4">
+            <button id="btnSubmit" class="btn btn-primary btn-lg btn-block" type="submit">save</button>
+          </form>
+```
+
+## Esempio 1
+```js
+var obj_form = {
+                      form: 'formTest4',
+                      submit: true,
+                      inputs: [
+                          {
+                           input: 'firstName4',
+                           type: 'required'
+                          },
+                          {
+                             input: 'total4',
+                             type: 'required,number',
+                             keyup: true,
+                             keypress: true
+                          },
+                          { 
+                           input: 'email4',
+                           type: 'required,email',
+                          },
+                         {   input: 'testomin',
+                             type: 'required',
+                             keyup: true,
+                             keypress: true
+                               
+                          }]}
+        
+         jPagevalid.form(obj_form);
+
+```
+## Esempio 2
+
+```js
+ jPagevalid.form('formTest4')
+             .addInput({input: 'firstName4',type: 'required'})  
+             .addInput({input: 'total4',type: 'required,number'}) 
+             .addInput({input: 'email4',type: 'required,email'}) 
+             .addInput({input: 'testomin',type: 'required,alphanumeric'}) 
+```
 
 
+## _Proprieta disponibili per l'oggetto javascript_
+
+***Inserito come oggetto javascript*** 
+```js
+ {input: 'testomin',type: 'required',boxErr:'...',focus:false,blur:false,keyup:true,keypress:true,valid:function(v){},message:'...',equalsTo:'id1'}
+```
+***Inserito tramite attribute html jms-valid*** 
+```html
+  <input type="text" jms-valid="{type:'requred,number',boxErr:'...',focus:false,blur:false,keyup:true,keypress:true,valid:function(v){},message:'...',equalsTo:'id1'}">    
+```
+
+Proprieta | Type | Descrizione  
+------- | ------- | ------- 
+**input** | String |id del tag input da validare, obbligatorio se inserito in oggetto javascript. Non obbligatorio se inserito come oggetto in attribute jms-valid={}
+**type** | String | nome della funzione di validazione separare piu nomi con la virgola(,) obbligatorio se si vuole eseguire una validazione
+**boxErr** | String | id del tag che contiene il messaggio di errore, in alternativa se non si vuole utilizzare la proprieta, inserite come nome attributo html l'id del tag input nel tag che contiene il messaggio di errore ``esempio:<input id="citta"><div class="error" citta> messaggio di errore</div>``  [facoltativo]
+**focus** | boolean | abilita e disabilita la validazione su focus di default e abilitata[facoltativo]
+**blur** | boolean | abilita e disabilita la validazione su blur di default e abilitata[facoltativo]
+**keyup** | boolean | abilita e disabilita la validazione su keyup di default e disabilitata[facoltativo]
+**keypress** | boolean | abilita e disabilita la validazione su keypress di default e disabilitata[facoltativo]
+**valid** | function | ulteriore funzione personalizzata la funzione deve ritornare un valore boolean true/false[facoltativo]
+**message** | String | messaggio di errore personalizzato se inserito avrà prevalenza su tutti i messaggi[facoltativo]
+**equalsTo** | String | id del tag input da uguagliare, separare piu id con la virgola(,)[facoltativo]
+
+ 
 
  ## License
 
