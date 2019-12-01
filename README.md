@@ -250,8 +250,14 @@ var obj_form = {
 
 
 ## _Proprieta disponibili per l'oggetto javascript_
+
+***Inserito come oggetto javascript*** 
 ```js
  {input: 'testomin',type: 'required',boxErr:'...',focus:false,blur:false,keyup:true,keypress:true,valid:function(v){},message:'...',equalsTo:'id1'}
+```
+***Inserito tramite attribute html jms-valid*** 
+```html
+  <input type="text" jms-valid="{type:'requred,number',boxErr:'...',focus:false,blur:false,keyup:true,keypress:true,valid:function(v){},message:'...',equalsTo:'id1'}">    
 ```
 
 Proprieta | Type | Descrizione  
@@ -267,6 +273,7 @@ Proprieta | Type | Descrizione
 **message** | String | messaggio di errore personalizzato se inserito avrà prevalenza su tutti i messaggi[facoltativo]
 **equalsTo** | String | id del tag input da uguagliare, separare piu id con la virgola(,)[facoltativo]
 
+ 
 
  ## License
 
