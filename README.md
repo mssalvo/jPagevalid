@@ -13,7 +13,7 @@ Per validazioni lato client in javascript nativo, si distacca da ogni framework 
 
 ## _Metodi disponibili_
 
-Metodo | Esempio | Destrizione  
+Metodo | Esempio | Descrizione  
 ------- | ------- | ------- 
 **get** | jPaging.get('nomeIstanza') | crea una nova istanza se non presente o ritorna l'istanza associata al nome passato come parametro 
 **form** | jPaging.form('id-form-html') | inizializza una validazione per il form, crea una nova istanza associa all'istanza come nome l'id passato come parametro
@@ -167,7 +167,7 @@ jPagevalid.addValidation("checkendate",function(value,message,input,search) {
      .isSubmit(false); // disabilito l'invio del modulo tramite l'evento submit
 
 ```
-## Esempio validazione tramite oggetto javascript
+## Esempi di validazione tramite oggetto javascript
 ```html
 <form id="formTest4" class="needs-validation" novalidate>
             <div class="row">
@@ -247,6 +247,23 @@ var obj_form = {
              .addInput({input: 'email4',type: 'required,email'}) 
              .addInput({input: 'testomin',type: 'required,alphanumeric'}) 
 ```
+
+
+## _Proprieta disponibili per l'oggetto javascript_
+
+Proprieta | Type | Descrizione  
+------- | ------- | ------- 
+**input** | String | id del tag input da validare, non obbligatorio se inserito come oggetto in attribute jms-valid={}
+**type** | String | nome della funzione di validazione separare piu nomi con la virgola(,)
+**boxErr** | String | id del tag che contiene il messaggio di errore
+**focus** | boolean | abilita e disabilita la validazione su focus di default e abilitata
+**blur** | boolean | abilita e disabilita la validazione su blur di default e abilitata
+**keyup** | boolean | abilita e disabilita la validazione su keyup di default e disabilitata
+**keypress** | boolean | abilita e disabilita la validazione su keypress di default e disabilitata
+**valid** | function | ulteriore funzione personalizzata la funzione deve ritornare un valore boolean true/false
+**message** | String | messaggio di errore personalizzato se inserito avrà prevalenza su tutti i messaggi
+**equalsTo** | String | id del tag input da uguagliare, separare piu id con la virgola(,)
+
 
  ## License
 
