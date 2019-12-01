@@ -250,19 +250,22 @@ var obj_form = {
 
 
 ## _Proprieta disponibili per l'oggetto javascript_
+```js
+ {input: 'testomin',type: 'required',boxErr:'...',focus:false,blur:false,keyup:true,keypress:true,valid:function(v){},message:'...',equalsTo:'id1'}
+```
 
 Proprieta | Type | Descrizione  
 ------- | ------- | ------- 
-**input** | String | id del tag input da validare, non obbligatorio se inserito come oggetto in attribute jms-valid={}
-**type** | String | nome della funzione di validazione separare piu nomi con la virgola(,)
-**boxErr** | String | id del tag che contiene il messaggio di errore
-**focus** | boolean | abilita e disabilita la validazione su focus di default e abilitata
-**blur** | boolean | abilita e disabilita la validazione su blur di default e abilitata
-**keyup** | boolean | abilita e disabilita la validazione su keyup di default e disabilitata
-**keypress** | boolean | abilita e disabilita la validazione su keypress di default e disabilitata
-**valid** | function | ulteriore funzione personalizzata la funzione deve ritornare un valore boolean true/false
-**message** | String | messaggio di errore personalizzato se inserito avrà prevalenza su tutti i messaggi
-**equalsTo** | String | id del tag input da uguagliare, separare piu id con la virgola(,)
+**input** | String |id del tag input da validare, obbligatorio se inserito in oggetto javascript. Non obbligatorio se inserito come oggetto in attribute jms-valid={}
+**type** | String | nome della funzione di validazione separare piu nomi con la virgola(,) obbligatorio se si vuole eseguire una validazione
+**boxErr** | String | id del tag che contiene il messaggio di errore, [facoltativo]
+**focus** | boolean | abilita e disabilita la validazione su focus di default e abilitata[facoltativo]
+**blur** | boolean | abilita e disabilita la validazione su blur di default e abilitata[facoltativo]
+**keyup** | boolean | abilita e disabilita la validazione su keyup di default e disabilitata[facoltativo]
+**keypress** | boolean | abilita e disabilita la validazione su keypress di default e disabilitata[facoltativo]
+**valid** | function | ulteriore funzione personalizzata la funzione deve ritornare un valore boolean true/false[facoltativo]
+**message** | String | messaggio di errore personalizzato se inserito avrà prevalenza su tutti i messaggi[facoltativo]
+**equalsTo** | String | id del tag input da uguagliare, separare piu id con la virgola(,)[facoltativo]
 
 
  ## License
