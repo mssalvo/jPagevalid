@@ -138,7 +138,7 @@ jPagevalid.prototype.executeOnChange = function (o) {
                     if (id == e.elName)
                         el = e.elObj;
                 });
-                return el || document.createElement('input')
+                return el || document.querySelector('#'+id) || document.createElement('input')
             }]);
     }
     if (t__.isEnabledSubmits)
@@ -298,7 +298,7 @@ jPagevalid.prototype.intern_process_private = function (x) {
                         if (id == e.elName)
                             el = e.elObj;
                     });
-                    return el || document.createElement('input')
+                    return el || document.querySelector('#'+id) || document.createElement('input')
                 }]) || types[t] === "equals" && !this.partFn[types[t]].fn.apply(element, [t__.isAllEqualsTo, input, t__.inputs])) {
                 if (types[t] === "valid")
                     return true;
@@ -352,7 +352,7 @@ jPagevalid.prototype.intern_process_private = function (x) {
                     if (id == e.elName)
                         el = e.elObj;
                 });
-                return el || document.createElement('input')
+                return el ||  document.querySelector('#'+id) || document.createElement('input')
             }]))
         {
             this.inputs[x].valid = false;
@@ -382,6 +382,7 @@ jPagevalid.prototype.intern_process_private = function (x) {
     return this.inputs[x].valid;
 };
 jPagevalid.prototype.isRequiredIf = function (input) {
+    var t__=this;
     if (typeof input.requiredIf === "object") {
         if (input.requiredIf.type === "def") {
             return false;
@@ -400,7 +401,13 @@ jPagevalid.prototype.isRequiredIf = function (input) {
         }
     } else if (typeof input.requiredIf === "function")
     {
-        return input.requiredIf.apply(this, [])
+        return input.requiredIf.apply(this, [function (id) {
+                    var el = undefined;
+                    t__.inputs.forEach(function (e) {
+                        if (id == e.elName)
+                            el = e.elObj;
+                    });
+                    return el ||  document.querySelector('#'+id) || document.createElement('input')}])
     } else
     {
         return false;
@@ -456,7 +463,7 @@ jPagevalid.prototype.process = function (x) {
                         if (id == e.elName)
                             el = e.elObj;
                     });
-                    return el || document.createElement('input')
+                    return el ||  document.querySelector('#'+id) || document.createElement('input')
                 }]) || types[t] === "equals" && !this.partFn[types[t]].fn.apply(element, [t__.isAllEqualsTo, input, t__.inputs])
                     || types[t] === "valid" && !this.partFn[types[t]].fn.apply(t__, [])) {
                 if (types[t] === "valid")
@@ -511,7 +518,7 @@ jPagevalid.prototype.process = function (x) {
                     if (id == e.elName)
                         el = e.elObj;
                 });
-                return el || document.createElement('input')
+                return el || document.querySelector('#'+id) || document.createElement('input')
             }]))
         {
             this.inputs[x].valid = false;
@@ -656,7 +663,7 @@ jPagevalid.prototype.removeAndInclude = function (d) {
 };
 jPagevalid.prototype.checkAddInputRequiredIf = function (obj) {
 
-    if (typeof obj.requiredIf !== "undefined") {
+    if (typeof obj.requiredIf !== "undefined" && typeof obj.requiredIf !== "function") {
         var bbol_ = false;
         this.inputs.forEach(function (e) {
             if (obj.requiredIf === e.elName) {
