@@ -363,6 +363,146 @@
             <hr class="mb-4">
             <button id="btnSubmit" class="btn btn-primary btn-lg btn-block" type="submit">save</button>
           </form>
+          
+       <div class="py-5 text-center">
+        
+         <h2>jPagevalid </h2>
+        <p class="lead">Validare dei campi solo se richiesto. Esempio con l'utilizzo requiredIf:'ID-ELEMENTO O FUNZIONE'</p>
+      </div>
+          <code>
+               var obj_formCheck = {<br>
+                      form: 'formTestCheck',<br>
+                      submit: true,<br>
+                      inputs: [<br>
+                          {input: 'firstName8',<br>
+                             
+                              type: 'required'<br>
+                          },<br>
+                          {input: 'total8',<br>
+                             
+                              type: 'required,number',<br>
+                              keyup: true,<br>
+                              keypress: true<br>
+                          },<br>
+                          {input: 'email8',<br>
+                               
+                              type: 'required,email',<br>
+                          
+                          },<br>
+                          {input: 'testomin8',<br>
+                            type: 'required',<br>
+                                valid: function (value,message,input,search) {<br>
+                                if (value.length >19) {<br>
+                                    return true;<br>
+                                } else<br>
+                                    input.message = "Inserisci min. 20 caratteri : " + value.length<br>
+                                     
+                                    return false;<br>
+                            },<br>
+                              keyup: true,<br>
+                              keypress: true<br>
+                               
+                          },{input: 'campo1',<br>
+                               
+                           requiredIf:'checkmaster',<br>
+                           keyup: true,<br>
+                              keypress: true<br>
+                          
+                          },{input: 'campo2',<br>
+                               
+                            requiredIf:'checkmaster',<br>
+                            keyup: true,<br>
+                              keypress: true<br>
+                          
+                          },{input: 'check1',<br>
+                               
+                             requiredIf:'checkmaster'<br>
+                          
+                          },{input: 'check2',<br>
+                               
+                             requiredIf:'checkmaster'<br>
+                          
+                          }]}<br>
+         
+         
+         jPagevalid.form(obj_formCheck).checkOnSubmit();<br>
+          </code>
+          <h4 class="mb-3">ESEMPIO 4</h4>
+          requiredIf
+          <form id="formTestCheck" class="needs-validation" novalidate>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName8">First name</label>
+                <input type="text" class="form-control" id="firstName8" placeholder="" value="">
+                <div class="invalid-feedback" firstName4>
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="total8">Total</label>
+                <input type="text" class="form-control" id="total8" placeholder="" value="">
+                <div class="invalid-feedback" total4>
+                  Valid last name is required.
+                </div>
+              </div>
+            </div>
+  
+            <div class="mb-3">
+              <label for="email8">Email </label>
+              <input type="email" class="form-control" id="email8" placeholder="you@example.com">
+              <div class="invalid-feedback" email4>
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="testomin8">Testo min 20 caratteri</label>
+              <input type="text" class="form-control" id="testomin8" placeholder=" ">
+              <div class="invalid-feedback" testomin8>
+               min 20 caratteri.
+              </div>
+            </div>
+            
+             <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="checkmaster">
+              <label class="custom-control-label" for="checkmaster">Check Master</label>
+              <div class="invalid-feedback" style="display:block" checkmaster> </div>
+            </div> 
+            
+               <div class="mb-3">
+              <label for="campo1">Campo1 obbligatorio se Check Master è selezionato</label>
+              <input type="text" class="form-control" id="campo1" placeholder="you@example.com">{requiredIf:'checkmaster'}
+              <div class="invalid-feedback" campo1>
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+              <div class="mb-3">
+              <label for="campo2">Campo2 obbligatorio se Check Master è selezionato</label>
+              <input type="text" class="form-control" id="campo2" placeholder="you@example.com"> {requiredIf:'checkmaster'}
+              <div class="invalid-feedback" campo2>
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>  
+              
+             <div class="custom-control custom-checkbox">
+                 
+              <input type="checkbox" class="custom-control-input" id="check1">
+              <label class="custom-control-label" for="check1">obbligatorio se Check Master è selezionato</label>
+              <div class="invalid-feedback" style="display:block" check1> </div>
+            </div>  
+             <div class="custom-control custom-checkbox">
+                 
+              <input type="checkbox" class="custom-control-input" id="check2">
+              <label class="custom-control-label" for="check2">obbligatorio se Check Master è selezionato</label>
+              <div class="invalid-feedback" style="display:block" check2> </div>
+            </div>  
+              
+            <hr class="mb-4">
+            <button id="btnSubmit8" class="btn btn-primary btn-lg btn-block" type="submit">save</button>
+          </form>
+          
+          
+          
         </div>
     <div class="col-md-2"></div>
       </div>
@@ -444,6 +584,67 @@
               document.getElementById('btnSubmit').disabled=false;       
              }
          }).form(obj_form).checkOnSubmit();
+         
+         
+         
+         
+         
+          var obj_formCheck = {
+                      form: 'formTestCheck',
+                      submit: true,
+                      inputs: [
+                          {input: 'firstName8',
+                             
+                              type: 'required'
+                          },
+                          {input: 'total8',
+                             
+                              type: 'required,number',
+                              keyup: true,
+                              keypress: true
+                          },
+                          {input: 'email8',
+                               
+                              type: 'required,email',
+                          
+                          },
+                          {input: 'testomin8',
+                            type: 'required',
+                                valid: function (value,message,input,search) {
+                                if (value.length >19) {
+                                    return true;
+                                } else
+                                    input.message = "Inserisci min. 20 caratteri : " + value.length
+                                     
+                                    return false;
+                            },
+                              keyup: true,
+                              keypress: true
+                               
+                          },{input: 'campo1',
+                               
+                           requiredIf:'checkmaster',
+                           keyup: true,
+                              keypress: true
+                          
+                          },{input: 'campo2',
+                               
+                            requiredIf:'checkmaster',
+                            keyup: true,
+                              keypress: true
+                          
+                          },{input: 'check1',
+                               
+                             requiredIf:'checkmaster'
+                          
+                          },{input: 'check2',
+                               
+                             requiredIf:'checkmaster'
+                          
+                          }]}
+         
+         
+         jPagevalid.form(obj_formCheck).checkOnSubmit();
     </script> 
     
   </body>

@@ -52,6 +52,9 @@ jPagevalid.prototype.partFn = {
     required: {fn: function (v) {
             return (/^([\s])*$/.test(v) === false);
         }, message: 'Campo Obbligatorio'},
+    checkto: {fn: function (v) {
+            return (/^([\s])*$/.test(v) === false);
+        }, message: 'Campo Obbligatorio'},
     alphanumeric: {fn: function (v) {
             return /^\w+$/i.test(v)
         }, message: 'Solo lettere, numeri e caratteri di sottolineatura'},
@@ -64,9 +67,14 @@ jPagevalid.prototype.partFn = {
     cap: {fn: function (v) {
             return /^\d{5}$/.test(v)
         }, message: 'Si prega di specificare un codice postale valido'},
-    equals:{fn: function (f,i,p) {
-            return f(i,p);
+    equals: {fn: function (f, i, p) {
+            return f(i, p);
         }, message: 'Il valore inserito non coincide con quello atteso'},
+    valid: {fn: function () {
+            var bbol = this.internCheckValid();
+            this.fnEnabledSubmits();
+            return bbol;
+        }, message: ''},
     date: {fn: function (v) {
             var isCheckData = false,
                     regex1 = /^\d{2}\/\d{2}\/\d{4}$/,
@@ -101,14 +109,16 @@ jPagevalid.prototype.partFn = {
         }, message: 'Si prega di specificare un formato data valido (GG-MM-AAAA) (GG/MM/AAAA)'}
 
 };
-jPagevalid.prototype.isAllEqualsTo = function (input,inputs) {
-    var isVal=true;
-    var inputsId=input.equalsTo.split(',');
+jPagevalid.prototype.isAllEqualsTo = function (input, inputs) {
+    var isVal = true;
+    var inputsId = input.equalsTo.split(',');
     for (var j in inputsId) {
-    for (var i in inputs) {
-        if (input.elName!=inputs[i].elName && inputs[i].elName==inputsId[j] && inputs[i].elObj.value!==input.elObj.value)
-            isVal= false;
-    }
+        for (var i in inputs) {
+            if (inputs[i].elName == inputsId[j] && (inputs[i].elObj.type.toLowerCase() === 'checkbox' || inputs[i].elObj.type.toLowerCase() === 'radio') && (input.elObj.type.toLowerCase() === 'checkbox' || input.elObj.type.toLowerCase() === 'radio'))
+                isVal = (inputs[i].elObj.checked == input.elObj.checked);
+            else if (input.elName != inputs[i].elName && inputs[i].elName == inputsId[j] && inputs[i].elObj.value !== input.elObj.value)
+                isVal = false;
+        }
     }
     return isVal;
 };
@@ -131,33 +141,33 @@ jPagevalid.prototype.executeOnChange = function (o) {
                 return el || document.createElement('input')
             }]);
     }
-       if(t__.isEnabledSubmits)
+    if (t__.isEnabledSubmits)
         t__.fnEnabledSubmits();
-    
+
     return this;
 };
-jPagevalid.prototype.checkOffSubmit=function(){
-    this.isEnabledSubmits=false;
-     return this;
+jPagevalid.prototype.checkOffSubmit = function () {
+    this.isEnabledSubmits = false;
+    return this;
 };
-jPagevalid.prototype.checkOnSubmit=function(){
-    this.isEnabledSubmits=true;
-     this.fnEnabledSubmits();
+jPagevalid.prototype.checkOnSubmit = function () {
+    this.isEnabledSubmits = true;
+    this.fnEnabledSubmits();
     return this;
 };
 jPagevalid.prototype.fnEnabledSubmits = function () {
-     var t__ = this;
-    if(t__.isEnabledSubmits)
+    var t__ = this;
+    if (t__.isEnabledSubmits)
     {
-     t__.btnSubmits.forEach(function(el){
-         if(!t__.allValid())
-             el.disabled=true;
-         else
-           el.disabled=false;   
-     })   
-        
-    }   
-      
+        t__.btnSubmits.forEach(function (el) {
+            if (!t__.allValid())
+                el.disabled = true;
+            else
+                el.disabled = false;
+        })
+
+    }
+
 };
 jPagevalid.prototype.onChange = function (fn) {
     this.fnChange = fn;
@@ -169,8 +179,8 @@ jPagevalid.prototype.changeFnMessage = function (fnname/*<nome della funzione>*/
 };
 
 jPagevalid.prototype.addValidation = function (fnname/*<nome della funzione>*/, fnCall/*<funzione>*/, msg/*<messaggio>*/) {
-    if(fnname!=="equals")
-    this.partFn[fnname] = {fn: fnCall, message: msg};
+    if (fnname !== "equals" && fnname !== "valid" && fnname !== "checkto")
+        this.partFn[fnname] = {fn: fnCall, message: msg};
     return this;
 };
 jPagevalid.prototype.clearById = function (/*<elimina le classi di validazioni ed il messaggio prodotto>*/) {
@@ -220,6 +230,182 @@ jPagevalid.prototype.valid = function (/*<cerca per il singolo id se presente co
         return true;
     }
 };
+jPagevalid.prototype.internCheckValid = function (/*<cerca per il singolo id se presente come argomento o Tutti>*/) {
+    var t__ = this;
+    if (typeof arguments[0] !== "undefined" && typeof arguments[0] === "string") {
+        for (var x in this.inputs) {
+            if (this.inputs[x].elName === arguments[0]) {
+                return this.intern_process_private(x);
+            }
+        }
+    } else {
+        for (var x in this.inputs) {
+            (function (x) {
+                t__.intern_process_private(x)
+            })(x);
+        }
+        for (var i in this.inputs) {
+            if (!this.inputs[i].valid)
+                return false;
+        }
+        return true;
+    }
+};
+jPagevalid.prototype.intern_process_private = function (x) {
+    this.inputs[x].valid = true;
+    var input = this.inputs[x];
+    var element = input.elObj;
+    var elementBoxError = input.elError || {innerHTML: ''};
+    var inputsObj = this.inputs;
+    input.message = input.messageOrigin;
+    if (input.classNotValid !== input.classNotValidOrigin) {
+        if (element.classList) {
+            element.classList.remove(input.classNotValid);
+        } else {
+            element.className = element.className.replace(/\input.classNotValid\b/g, "");
+        }
+    }
+    if (input.classValid !== input.classValidOrigin) {
+        if (element.classList) {
+            element.classList.remove(input.classValid);
+        } else {
+            element.className = element.className.replace(/\input.classValid\b/g, "");
+        }
+    }
+    input.classNotValid = input.classNotValidOrigin;
+    input.classValid = input.classValidOrigin;
+    var types = input.validateType.toLowerCase().split(' ').join('').split(',');
+    var isRequired = types.join('').indexOf('required') === -1 ? false : true;
+    var isRequiredIF_ = this.isRequiredIf(input);
+    for (var t in types) {
+        if ((isRequired && typeof (types[t]) !== "undefined") || (!isRequired && element.value !== "" && typeof (types[t]) !== "undefined")
+                || (element.type.toLowerCase() === 'checkbox' || element.type.toLowerCase() === 'radio' && types[t] === "equals")
+                || isRequiredIF_ || types[t] === "valid") {
+            elementBoxError.innerHTML = "";
+            if ((types[t] === 'required' || isRequiredIF_ || types[t] === 'valid') && (element.type.toLowerCase() === 'checkbox' || element.type.toLowerCase() === 'radio')) {
+                if (!element.checked && types[t] !== 'valid')
+                {
+                    this.inputs[x].valid = false;
+                    elementBoxError.innerHTML = input.message || this.partFn[types[t]].message  /*input.message*/
+                    return this.inputs[x].valid
+                }
+                return this.inputs[x].valid
+            }
+            var t__ = this;
+            if (types[t] !== "equals" && types[t] !== "valid" && !this.partFn[types[t]].fn.apply(element, [element.value, this.partFn[types[t]].message, input, function (id) {
+                    var el = undefined;
+                    inputsObj.forEach(function (e) {
+                        if (id == e.elName)
+                            el = e.elObj;
+                    });
+                    return el || document.createElement('input')
+                }]) || types[t] === "equals" && !this.partFn[types[t]].fn.apply(element, [t__.isAllEqualsTo, input, t__.inputs])) {
+                if (types[t] === "valid")
+                    return true;
+                this.inputs[x].valid = false;
+                elementBoxError.innerHTML = input.message || this.partFn[types[t]].message  /*input.message*/
+                if (element.classList) {
+                    element.classList.remove(input.classValid);
+                    element.classList.add(input.classNotValid);
+                } else {
+                    element.className = element.className.replace(/\input.classValid\b/g, "");
+                    if (element.className.split(" ").indexOf(input.classNotValid) == -1) {
+                        element.className += " " + input.classNotValid;
+                    }
+                }
+                return this.inputs[x].valid;
+            } else {
+                if (element.classList) {
+                    element.classList.remove(input.classNotValid);
+                    element.classList.add(input.classValid);
+                } else {
+                    element.className = element.className.replace(/\input.classNotValid\b/g, "");
+                    if (element.className.split(" ").indexOf(input.classValid) == -1) {
+                        element.className += " " + input.classValid;
+                    }
+                }
+            }
+        } else if (!isRequired) {
+            if (element.classList) {
+                element.classList.remove(input.classNotValid);
+                element.classList.add(input.classValid);
+            } else {
+                element.className = element.className.replace(/\input.classNotValid\b/g, "");
+                if (element.className.split(" ").indexOf(input.classValid) == -1) {
+                    element.className += " " + input.classValid;
+                }
+            }
+            elementBoxError.innerHTML = "";
+        }
+    }
+    if (input.validateFn !== undefined)
+    {
+        elementBoxError.innerHTML = "";
+        var fn = function () {};
+        if (typeof (input.validateFn) === "string")
+            fn = eval(input.validateFn);
+        if (typeof (input.validateFn) === "function")
+            fn = input.validateFn;
+        if (!fn.apply(element, [element.value, input.message, input, function (id) {
+                var el = undefined;
+                inputsObj.forEach(function (e) {
+                    if (id == e.elName)
+                        el = e.elObj;
+                });
+                return el || document.createElement('input')
+            }]))
+        {
+            this.inputs[x].valid = false;
+            elementBoxError.innerHTML = input.message || ''
+            if (element.classList) {
+                element.classList.remove(input.classValid);
+                element.classList.add(input.classNotValid);
+            } else {
+                element.className = element.className.replace(/\input.classValid\b/g, "");
+                if (element.className.split(" ").indexOf(input.classNotValid) == -1) {
+                    element.className += " " + input.classNotValid;
+                }
+            }
+        } else {
+            this.inputs[x].valid = true;
+            if (element.classList) {
+                element.classList.remove(input.classNotValid);
+                element.classList.add(input.classValid);
+            } else {
+                element.className = element.className.replace(/\input.classNotValid\b/g, "");
+                if (element.className.split(" ").indexOf(input.classValid) == -1) {
+                    element.className += " " + input.classValid;
+                }
+            }
+        }
+    }
+    return this.inputs[x].valid;
+};
+jPagevalid.prototype.isRequiredIf = function (input) {
+    if (typeof input.requiredIf === "object") {
+        if (input.requiredIf.type === "def") {
+            return false;
+        } else if (input.requiredIf.type.toLowerCase() === 'checkbox' || input.requiredIf.type.toLowerCase() === 'radio')
+        {
+            return input.requiredIf.checked;
+        } else if (input.requiredIf.tagName.toLowerCase() === 'input' && input.requiredIf.type.toLowerCase() === 'text')
+        {
+            return input.requiredIf.value.length > 0;
+        } else if (input.requiredIf.tagName.toLowerCase() === 'select')
+        {
+            return input.requiredIf.value.length > 0;
+        } else
+        {
+            return false;
+        }
+    } else if (typeof input.requiredIf === "function")
+    {
+        return input.requiredIf.apply(this, [])
+    } else
+    {
+        return false;
+    }
+};
 jPagevalid.prototype.process = function (x) {
     this.inputs[x].valid = true;
     var input = this.inputs[x];
@@ -246,28 +432,35 @@ jPagevalid.prototype.process = function (x) {
     var types = input.validateType.toLowerCase().split(' ').join('').split(',');
     var isRequired = types.join('').indexOf('required') === -1 ? false : true;
     for (var t in types) {
-      
-        if ((isRequired && typeof (types[t]) !== "undefined") || (!isRequired && element.value !== "") && typeof (types[t]) !== "undefined") {
+        var isRequiredIF_ = this.isRequiredIf(input);
+        if ((isRequired && typeof (types[t]) !== "undefined") || (!isRequired && element.value !== "" && typeof (types[t]) !== "undefined")
+                || (element.type.toLowerCase() === 'checkbox' || element.type.toLowerCase() === 'radio' && types[t] === "equals")
+                || isRequiredIF_ || types[t] === "valid") {
             elementBoxError.innerHTML = "";
-            if (types[t] === 'required' && element.type.toLowerCase() === 'checkbox' || element.type.toLowerCase() === 'radio') {
-                if (!element.checked)
+            if ((types[t] === 'required' || isRequiredIF_ || types[t] === 'valid') && (element.type.toLowerCase() === 'checkbox' || element.type.toLowerCase() === 'radio')) {
+                if (!element.checked && types[t] !== 'valid')
                 {
                     this.inputs[x].valid = false;
                     elementBoxError.innerHTML = input.message || this.partFn[types[t]].message  /*input.message*/
                     return this.inputs[x].valid
+                } else if (types[t] === 'valid') {
+                    this.partFn.valid.fn.apply(this, [])
                 }
                 this.fnEnabledSubmits();
-               return this.inputs[x].valid
+                return this.inputs[x].valid
             }
-            var t__=this;
-            if (types[t]!=="equals" && !this.partFn[types[t]].fn.apply(element, [element.value, this.partFn[types[t]].message, input, function (id) {
+            var t__ = this;
+            if (types[t] !== "equals" && types[t] !== "valid" && !this.partFn[types[t]].fn.apply(element, [element.value, this.partFn[types[t]].message, input, function (id) {
                     var el = undefined;
                     inputsObj.forEach(function (e) {
                         if (id == e.elName)
                             el = e.elObj;
                     });
                     return el || document.createElement('input')
-                }]) || types[t]==="equals" && !this.partFn[types[t]].fn.apply(element, [t__.isAllEqualsTo,input,t__.inputs])) {
+                }]) || types[t] === "equals" && !this.partFn[types[t]].fn.apply(element, [t__.isAllEqualsTo, input, t__.inputs])
+                    || types[t] === "valid" && !this.partFn[types[t]].fn.apply(t__, [])) {
+                if (types[t] === "valid")
+                    return true;
                 this.inputs[x].valid = false;
                 elementBoxError.innerHTML = input.message || this.partFn[types[t]].message  /*input.message*/
                 if (element.classList) {
@@ -351,6 +544,7 @@ jPagevalid.prototype.addInput = function (obj) {
     var t__ = this;
     try {
         if (typeof (obj.input) === "string") {
+            t__.removeId(obj.input);
             obj.input = document.getElementById(obj.input); /*MS querySelector*/
             if (obj.input) {
                 if (typeof (obj.focus) === "undefined" || typeof (obj.focus) === "boolean" && obj.focus)
@@ -373,13 +567,15 @@ jPagevalid.prototype.addInput = function (obj) {
                     obj.input.addEventListener('click', function () {
                         t__.eventValid(obj.input)
                     }, false);
-                
-                t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus,obj.equalsTo))
+
+                t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus, obj.equalsTo, obj.requiredIf))
+                t__.checkAddInputRequiredIf(obj);
             }
         } else {
             obj.input.id = obj.input.id || 'jms-' + Math.floor(Math.random() * 5500) + '-' + Math.floor(Math.random() * 10000);
-            t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus,obj.equalsTo))
-           
+            t__.removeId(obj.input.id);
+            t__.inputs.push(new Obj(obj.input, obj.boxErr, obj.message || '', obj.type, obj.valid, obj.name || obj.input.id, obj.classNotValid, obj.classValid, obj.keyup, obj.keypress, obj.blur, obj.focus, obj.equalsTo, obj.requiredIf))
+            t__.checkAddInputRequiredIf(obj);
         }
     } catch (err) {
     }
@@ -423,18 +619,18 @@ jPagevalid.prototype.include = function (d) {
     });
     if (arguments.length > 1 && typeof (arguments[1]) === "string") {
         var f = document.getElementById(arguments[1]);
-        if (f && typeof (f.tagName) !== "undefined" && String(f.tagName).toUpperCase() === "FORM"){
+        if (f && typeof (f.tagName) !== "undefined" && String(f.tagName).toUpperCase() === "FORM") {
             f.onsubmit = function () {
                 return t__.send ? t__.execute(true) : t__.submit ? t__.valid() : t__.execute(false);
             }
-            t__.btnSubmits=[];
-             Array.prototype.forEach.call(f.querySelectorAll('[type=submit]'), function (el, i) {
-              t__.btnSubmits.push(el);
-          });
-        }     
+            t__.btnSubmits = [];
+            Array.prototype.forEach.call(f.querySelectorAll('[type=submit]'), function (el, i) {
+                t__.btnSubmits.push(el);
+            });
+        }
     }
     t__.executeOnChange(t__.inputs.length > 0 ? t__.inputs[0].elObj : document.createElement('input'));
-     
+
     return t__;
 };
 jPagevalid.prototype.eventFocus = function (a) {
@@ -458,6 +654,23 @@ jPagevalid.prototype.removeAndInclude = function (d) {
     });
     return t__;
 };
+jPagevalid.prototype.checkAddInputRequiredIf = function (obj) {
+
+    if (typeof obj.requiredIf !== "undefined") {
+        var bbol_ = false;
+        this.inputs.forEach(function (e) {
+            if (obj.requiredIf === e.elName) {
+                if (e.validateType.indexOf('valid') === -1)
+                    e.validateType += e.validateType ? ',valid' : 'valid';
+                bbol_ = true;
+            }
+        });
+        if (!bbol_) {
+            this.addInput({input: obj.requiredIf, type: 'valid', keyup: true, keypress: true, blur: true, focus: true});
+        }
+    }
+
+};
 jPagevalid.prototype.execute = function (b) {
     var t__ = this;
     t__.valid();
@@ -474,6 +687,20 @@ jPagevalid.prototype.authorizeSend = function () {
 };
 jPagevalid.prototype.removeAll = function () {
     this.inputs = [];
+    return this;
+};
+
+jPagevalid.prototype.removeId = function () {
+    var idOb = "";
+    if (typeof (arguments[0]) === "string")
+        idOb = arguments[0];
+    if (typeof (arguments[0]) === "object")
+        idOb = arguments[0].id;
+    for (var j in this.inputs) {
+        if (this.inputs[j].elName === idOb) {
+            this.inputs.splice(j, 1);
+        }
+    }
     return this;
 };
 jPagevalid.prototype.form = function (/*form o object-valid*/) {
@@ -500,7 +727,7 @@ jPagevalid.prototype.form = function (/*form o object-valid*/) {
                     f.onsubmit = function () {
                         return t__.send ? t__.execute(true) : t__.submit ? t__.valid() : t__.execute(false);
                     }
-                t__.btnSubmits=[];
+                t__.btnSubmits = [];
                 Array.prototype.forEach.call(f.querySelectorAll('[type=submit]'), function (el, i) {
                     t__.btnSubmits.push(el);
                 });
@@ -510,7 +737,7 @@ jPagevalid.prototype.form = function (/*form o object-valid*/) {
         return t__;
     }
 };
-var Obj = function (input, boxErr, message, validType, validCallback, name, classNotValid, classValid, keyup, keypress, blur, focus,equalsTo) {
+var Obj = function (input, boxErr, message, validType, validCallback, name, classNotValid, classValid, keyup, keypress, blur, focus, equalsTo, requiredIf) {
     this.elObj = input;
     this.elError = boxErr ? document.getElementById(boxErr) : document.querySelector('[' + name + ']') ? document.querySelector('[' + name + ']') : {innerHTML: ''};
     this.message = message || '';
@@ -527,10 +754,18 @@ var Obj = function (input, boxErr, message, validType, validCallback, name, clas
     this.blur = typeof (blur) === "boolean" ? blur : true;
     this.focus = typeof (focus) === "boolean" ? focus : true;
     this.equalsTo = equalsTo || undefined;
+    this.requiredIf = requiredIf || undefined;
     this.valid = this.validateType.indexOf('required') === -1 ? true : false;
-    if(this.equalsTo && this.validateType.indexOf('equals')=== -1){
-    this.validateType+=this.validateType?',equals':'equals';  
+    if (this.requiredIf) {
+        this.validateType += this.validateType ? ',checkto' : 'checkto';
+        this.requiredIf = typeof requiredIf === "function" ? requiredIf : typeof requiredIf === "string" ? document.getElementById(requiredIf) : document.querySelector('[' + requiredIf + ']') ? document.querySelector('[' + requiredIf + ']') : {checked: false, type: 'def'};
+    } else {
+        this.requiredIf = {checked: false, type: 'def'}
     }
+    if (this.equalsTo && this.validateType.indexOf('equals') === -1) {
+        this.validateType += this.validateType ? ',equals' : 'equals';
+    }
+
 };
 jPagevalid.get = function (n) {
     if (typeof (n) === "undefined")
@@ -561,7 +796,7 @@ jPagevalid.form = function (/*form o object-valid*/) {
                     f.onsubmit = function () {
                         return jvalid.send ? jvalid.execute(true) : jvalid.submit ? jvalid.valid() : jvalid.execute(false);
                     }
-                jvalid.btnSubmits=[];
+                jvalid.btnSubmits = [];
                 Array.prototype.forEach.call(f.querySelectorAll('[type=submit]'), function (el, i) {
                     jvalid.btnSubmits.push(el);
                 });
