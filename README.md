@@ -272,7 +272,7 @@ Proprieta | Type | Descrizione
 **valid** | function | ulteriore funzione personalizzata la funzione deve ritornare un valore boolean true/false[facoltativo]
 **message** | String | messaggio di errore personalizzato se inserito avrà prevalenza su tutti i messaggi[facoltativo]
 **equalsTo** | String | id del tag input da uguagliare, separare piu id con la virgola(,)[facoltativo]
-
+**requiredIf** | String or function | valida il campo solo se il campo indicato con l'id o la funzione passata ritorna esito positivo ``esempio: [campo1 checkbox], [campo2 input requiredIf:idcampo1]  richiedo la validazione del campo2 solo se la campo1 è selezionato ,``[facoltativo]
  
 
  ## License
