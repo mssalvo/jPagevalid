@@ -151,6 +151,12 @@ jPagevalid.prototype.checkOffSubmit = function () {
     return this;
 };
 jPagevalid.prototype.checkOnSubmit = function () {
+    if(typeof arguments[0]!=="undefined")
+    {
+     var btn=document.getElementById(arguments[0]) || document.querySelector(arguments[0]) || document.createElement('button');
+     if(btn)
+     this.btnSubmits.push(btn)   
+    }    
     this.isEnabledSubmits = true;
     this.fnEnabledSubmits();
     return this;
